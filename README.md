@@ -5,7 +5,7 @@ A Go SDK for interacting with the [AccessGrid.com](https://www.accessgrid.com) A
 ## Installation
 
 ```bash
-go get github.com/access_grid/accessgrid-go
+go get github.com/Access-Grid/accessgrid-go
 ```
 
 ## Quick Start
@@ -13,10 +13,10 @@ go get github.com/access_grid/accessgrid-go
 ```go
 package main
 
-import (
+import (\n    "context"
     "fmt"
     "os"
-    "github.com/access_grid/accessgrid-go"
+    "github.com/Access-Grid/accessgrid-go"
 )
 
 func main() {
@@ -40,11 +40,12 @@ func main() {
 ```go
 package main
 
-import (
+import (\n    "context"
+    "context"
     "fmt"
     "os"
     "time"
-    "github.com/access_grid/accessgrid-go"
+    "github.com/Access-Grid/accessgrid-go"
 )
 
 func main() {
@@ -60,18 +61,20 @@ func main() {
     params := accessgrid.ProvisionParams{
         CardTemplateID:          "0xd3adb00b5",
         EmployeeID:             "123456789",
-        TagID:                  "DDEADB33FB00B5",
+        CardNumber:             "14563",
+        SiteCode:               "42",
         AllowOnMultipleDevices: true,
         FullName:              "Employee name",
         Email:                 "employee@yourwebsite.com",
         PhoneNumber:           "+19547212241",
         Classification:        "full_time",
-        StartDate:            time.Now().UTC().Format(time.RFC3339Nano),
-        ExpirationDate:       "2025-02-22T21:04:03.664Z",
+        StartDate:            time.Now().UTC(),
+        ExpirationDate:       time.Now().UTC().AddDate(1, 0, 0),
         EmployeePhoto:        "[image_in_base64_encoded_format]",
     }
 
-    card, err := client.AccessCards.Provision(params)
+    ctx := context.Background()
+    card, err := client.AccessCards.Provision(ctx, params)
     if err != nil {
         fmt.Printf("Error provisioning card: %v\n", err)
         return
@@ -86,11 +89,11 @@ func main() {
 ```go
 package main
 
-import (
+import (\n    "context"
    "fmt"
    "os"
    "time"
-   "github.com/access_grid/accessgrid-go"
+   "github.com/Access-Grid/accessgrid-go"
 )
 
 func main() {
@@ -108,11 +111,12 @@ func main() {
        EmployeeID:     "987654321",
        FullName:       "Updated Employee Name",
        Classification: "contractor",
-       ExpirationDate: time.Now().UTC().AddDate(0, 3, 0).Format(time.RFC3339),
+       ExpirationDate: &time.Time{}, // In actual code: expirationDate := time.Now().UTC().AddDate(0, 3, 0); params.ExpirationDate = &expirationDate
        EmployeePhoto:  "[image_in_base64_encoded_format]",
    }
 
-   card, err := client.AccessCards.Update(params)
+   ctx := context.Background()
+   card, err := client.AccessCards.Update(ctx, params)
    if err != nil {
        fmt.Printf("Error updating card: %v\n", err)
        return
@@ -127,10 +131,10 @@ func main() {
 ```go
 package main
 
-import (
+import (\n    "context"
     "fmt"
     "os"
-    "github.com/access_grid/accessgrid-go"
+    "github.com/Access-Grid/accessgrid-go"
 )
 
 func main() {
@@ -147,7 +151,8 @@ func main() {
     templateFilter := accessgrid.ListKeysParams{
         TemplateID: "0xd3adb00b5",
     }
-    templateKeys, err := client.AccessCards.List(&templateFilter)
+    ctx := context.Background()
+    templateKeys, err := client.AccessCards.List(ctx, &templateFilter)
     if err != nil {
         fmt.Printf("Error listing cards: %v\n", err)
         return
@@ -157,7 +162,7 @@ func main() {
     stateFilter := accessgrid.ListKeysParams{
         State: "active",
     }
-    activeKeys, err := client.AccessCards.List(&stateFilter)
+    activeKeys, err := client.AccessCards.List(ctx, &stateFilter)
     if err != nil {
         fmt.Printf("Error listing cards: %v\n", err)
         return
@@ -174,28 +179,29 @@ func main() {
 
 ```go
 // Suspend a card
-err = client.AccessCards.Suspend("0xc4rd1d")
+ctx := context.Background()
+err = client.AccessCards.Suspend(ctx, "0xc4rd1d")
 if err != nil {
     fmt.Printf("Error suspending card: %v\n", err)
     return
 }
 
 // Resume a card
-err = client.AccessCards.Resume("0xc4rd1d")
+err = client.AccessCards.Resume(ctx, "0xc4rd1d")
 if err != nil {
     fmt.Printf("Error resuming card: %v\n", err)
     return
 }
 
 // Unlink a card
-err = client.AccessCards.Unlink("0xc4rd1d")
+err = client.AccessCards.Unlink(ctx, "0xc4rd1d")
 if err != nil {
     fmt.Printf("Error unlinking card: %v\n", err)
     return
 }
 
 // Delete a card
-err = client.AccessCards.Delete("0xc4rd1d")
+err = client.AccessCards.Delete(ctx, "0xc4rd1d")
 if err != nil {
     fmt.Printf("Error deleting card: %v\n", err)
     return
@@ -209,10 +215,10 @@ if err != nil {
 ```go
 package main
 
-import (
+import (\n    "context"
    "fmt"
    "os"
-   "github.com/access_grid/accessgrid-go"
+   "github.com/Access-Grid/accessgrid-go"
 )
 
 func main() {
@@ -254,7 +260,8 @@ func main() {
        SupportInfo:         supportInfo,
    }
 
-   template, err := client.Console.CreateTemplate(params)
+   ctx := context.Background()
+   template, err := client.Console.CreateTemplate(ctx, params)
    if err != nil {
        fmt.Printf("Error creating template: %v\n", err)
        return
@@ -269,10 +276,10 @@ func main() {
 ```go
 package main
 
-import (
+import (\n    "context"
    "fmt"
    "os"
-   "github.com/access_grid/accessgrid-go"
+   "github.com/Access-Grid/accessgrid-go"
 )
 
 func main() {
@@ -302,7 +309,8 @@ func main() {
        SupportInfo:         supportInfo,
    }
 
-   template, err := client.Console.UpdateTemplate(params)
+   ctx := context.Background()
+   template, err := client.Console.UpdateTemplate(ctx, params)
    if err != nil {
        fmt.Printf("Error updating template: %v\n", err)
        return
@@ -317,10 +325,10 @@ func main() {
 ```go
 package main
 
-import (
+import (\n    "context"
    "fmt"
    "os"
-   "github.com/access_grid/accessgrid-go"
+   "github.com/Access-Grid/accessgrid-go"
 )
 
 func main() {
@@ -333,7 +341,8 @@ func main() {
        return
    }
 
-   template, err := client.Console.ReadTemplate("0xd3adb00b5")
+   ctx := context.Background()
+   template, err := client.Console.ReadTemplate(ctx, "0xd3adb00b5")
    if err != nil {
        fmt.Printf("Error reading template: %v\n", err)
        return
@@ -352,11 +361,11 @@ func main() {
 ```go
 package main
 
-import (
+import (\n    "context"
    "fmt"
    "os"
    "time"
-   "github.com/access_grid/accessgrid-go"
+   "github.com/Access-Grid/accessgrid-go"
 )
 
 func main() {
@@ -369,14 +378,17 @@ func main() {
        return
    }
 
+   startDate := time.Now().AddDate(0, 0, -30).UTC()
+   endDate := time.Now().UTC()
    filters := accessgrid.EventLogFilters{
        Device:    "mobile",
-       StartDate: time.Now().AddDate(0, 0, -30).UTC().Format(time.RFC3339),
-       EndDate:   time.Now().UTC().Format(time.RFC3339),
+       StartDate: &startDate,
+       EndDate:   &endDate,
        EventType: "install",
    }
 
-   events, err := client.Console.EventLog("0xd3adb00b5", filters)
+   ctx := context.Background()
+   events, err := client.Console.EventLog(ctx, "0xd3adb00b5", filters)
    if err != nil {
        fmt.Printf("Error fetching event log: %v\n", err)
        return
