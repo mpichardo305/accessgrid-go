@@ -5,7 +5,6 @@ import "time"
 // Device represents a device associated with an access pass
 type Device struct {
 	ID         string    `json:"id"`
-	ExID       string    `json:"ex_id"`
 	Platform   string    `json:"platform"`
 	DeviceType string    `json:"device_type"`
 	Status     string    `json:"status"`
