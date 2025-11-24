@@ -30,6 +30,17 @@ func (s *AccessCardsService) Provision(ctx context.Context, params models.Provis
 	return &card, nil
 }
 
+// Get retrieves a specific NFC key/card by ID
+func (s *AccessCardsService) Get(ctx context.Context, cardID string) (*models.Card, error) {
+	var card models.Card
+	path := fmt.Sprintf("/v1/key-cards/%s", url.PathEscape(cardID))
+	err := s.client.Request(ctx, http.MethodGet, path, nil, &card)
+	if err != nil {
+		return nil, fmt.Errorf("error getting card: %w", err)
+	}
+	return &card, nil
+}
+
 // Update updates an existing NFC key/card
 func (s *AccessCardsService) Update(ctx context.Context, params models.UpdateParams) (*models.Card, error) {
 	var card models.Card

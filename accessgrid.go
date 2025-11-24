@@ -42,6 +42,9 @@ func WithHTTPClient(httpClient *http.Client) client.Option {
 
 // Export model types for easy access
 type (
+	// Device represents a device associated with an access pass
+	Device = models.Device
+
 	// Card represents an NFC key or access pass
 	Card = models.Card
 

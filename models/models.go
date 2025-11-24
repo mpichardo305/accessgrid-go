@@ -2,24 +2,41 @@ package models
 
 import "time"
 
+// Device represents a device associated with an access pass
+type Device struct {
+	ID         string    `json:"id"`
+	ExID       string    `json:"ex_id"`
+	Platform   string    `json:"platform"`
+	DeviceType string    `json:"device_type"`
+	Status     string    `json:"status"`
+	CreatedAt  time.Time `json:"created_at"`
+	UpdatedAt  time.Time `json:"updated_at"`
+}
+
 // Card represents an NFC key or access pass
 type Card struct {
-	ID                    string    `json:"id"`
-	CardTemplateID        string    `json:"card_template_id"`
-	EmployeeID            string    `json:"employee_id"`
-	CardNumber            string    `json:"card_number"`
-	SiteCode              string    `json:"site_code,omitempty"`
-	FullName              string    `json:"full_name"`
-	Email                 string    `json:"email"`
-	PhoneNumber           string    `json:"phone_number"`
-	Classification        string    `json:"classification"`
-	StartDate             time.Time `json:"start_date"`
-	ExpirationDate        time.Time `json:"expiration_date"`
-	EmployeePhoto         string    `json:"employee_photo"`
-	State                 string    `json:"state"`
-	URL                   string    `json:"install_url"`
-	CreatedAt             time.Time `json:"created_at"`
-	UpdatedAt             time.Time `json:"updated_at"`
+	ID                    string                 `json:"id"`
+	CardTemplateID        string                 `json:"card_template_id"`
+	EmployeeID            string                 `json:"employee_id"`
+	CardNumber            string                 `json:"card_number"`
+	SiteCode              string                 `json:"site_code,omitempty"`
+	FullName              string                 `json:"full_name"`
+	Email                 string                 `json:"email"`
+	PhoneNumber           string                 `json:"phone_number"`
+	Classification        string                 `json:"classification"`
+	StartDate             time.Time              `json:"start_date"`
+	ExpirationDate        time.Time              `json:"expiration_date"`
+	EmployeePhoto         string                 `json:"employee_photo"`
+	State                 string                 `json:"state"`
+	URL                   string                 `json:"install_url"`
+	InstallURL            string                 `json:"install_url"`
+	Details               interface{}            `json:"details,omitempty"`
+	FileData              string                 `json:"file_data,omitempty"`
+	DirectInstallURL      string                 `json:"direct_install_url,omitempty"`
+	Devices               []Device               `json:"devices,omitempty"`
+	Metadata              map[string]interface{} `json:"metadata,omitempty"`
+	CreatedAt             time.Time              `json:"created_at"`
+	UpdatedAt             time.Time              `json:"updated_at"`
 }
 
 // ProvisionParams defines parameters for provisioning a new card
