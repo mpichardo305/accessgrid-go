@@ -63,7 +63,6 @@ func main() {
         EmployeeID:             "123456789",
         CardNumber:             "14563",
         SiteCode:               "42",
-        AllowOnMultipleDevices: true,
         FullName:              "Employee name",
         Email:                 "employee@yourwebsite.com",
         PhoneNumber:           "+19547212241",
@@ -81,6 +80,47 @@ func main() {
     }
 
     fmt.Printf("Install URL: %s\n", card.URL)
+}
+```
+
+#### Get a card
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    "github.com/Access-Grid/accessgrid-go"
+)
+
+func main() {
+    accountID := os.Getenv("ACCOUNT_ID")
+    secretKey := os.Getenv("SECRET_KEY")
+
+    client, err := accessgrid.NewClient(accountID, secretKey)
+    if err != nil {
+        fmt.Printf("Error creating client: %v\n", err)
+        return
+    }
+
+    ctx := context.Background()
+    card, err := client.AccessCards.Get(ctx, "0xc4rd1d")
+    if err != nil {
+        fmt.Printf("Error retrieving card: %v\n", err)
+        return
+    }
+
+    fmt.Printf("Card ID: %s\n", card.ID)
+    fmt.Printf("State: %s\n", card.State)
+    fmt.Printf("Full Name: %s\n", card.FullName)
+    fmt.Printf("Install URL: %s\n", card.InstallURL)
+    fmt.Printf("Expiration Date: %s\n", card.ExpirationDate)
+    fmt.Printf("Card Number: %s\n", card.CardNumber)
+    fmt.Printf("Site Code: %s\n", card.SiteCode)
+    fmt.Printf("Devices: %d\n", len(card.Devices))
+    fmt.Printf("Metadata: %v\n", card.Metadata)
 }
 ```
 
