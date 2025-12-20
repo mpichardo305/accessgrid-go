@@ -98,7 +98,7 @@ type UpdateParams struct {
 
 // ListKeysParams defines parameters for filtering cards
 type ListKeysParams struct {
-	TemplateID string `json:"template_id,omitempty"`
+	TemplateID string `json:"card_template_id,omitempty"`
 	State      string `json:"state,omitempty"`
 	EmployeeID string `json:"employee_id,omitempty"`
 	CardNumber string `json:"card_number,omitempty"`
